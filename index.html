@@ -1,0 +1,258 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<meta charset="UTF-8">
+
+<title>Update Academy - Réalisez vos rêves avec cinq pour cent d'efforts</title>
+<style>
+body {
+    background: url('http://update-academy.com/assets/admin/assets/login/fondj.jpg') no-repeat fixed center center;
+    background-size: cover;
+    
+    font-family: Montserrat;
+}
+
+
+
+.login-block {
+    width: 320px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    border-top: 5px solid #ef9d0a;
+   /* margin: 0 auto; */
+   margin-left:60%;
+   margin-top:250px;
+}
+
+.login-block h1 {
+    text-align: center;
+    color: #000;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.login-block input {
+    width: 100%;
+    height: 42px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-family: Montserrat;
+    padding: 0 20px 0 50px;
+    outline: none;
+}
+
+.login-block input#username {
+    background: #fff url('http://update-academy.com/assets/admin/assets/login/u0XmBmv.png') 20px top no-repeat;
+    background-size: 16px 80px;
+}
+
+.login-block input#username:focus {
+    background: #fff url('http://update-academy.com/assets/admin/assets/login/u0XmBmv.png') 20px bottom no-repeat;
+    background-size: 16px 80px;
+}
+
+.login-block input#password {
+    background: #fff url('http://update-academy.com/assets/admin/assets/login/Qf83FTt.png') 20px top no-repeat;
+    background-size: 16px 80px;
+}
+
+.login-block input#password:focus {
+    background: #fff url('http://update-academy.com/assets/admin/assets/login/Qf83FTt.png') 20px bottom no-repeat;
+    background-size: 16px 80px;
+}
+
+.login-block input:active, .login-block input:focus {
+    border: 1px solid #ff656c;
+}
+
+.login-block button {
+    width: 100%;
+    height: 40px;
+    background: #ef9d0a;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #e15960;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: Montserrat;
+    outline: none;
+    cursor: pointer;
+}
+
+.login-block button:hover {
+    background: #e3960e;
+}
+
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+        <script>
+      $(document).ready(function(){
+
+      $("#erreur_connection").hide();
+      $("#newpassword").hide();
+      $("#envoie_passe").hide();
+      $("#erreur_passe").hide();
+
+      $('#pass_oublie').click(function(){
+      $("#authentification").hide();
+      $("#newpassword").show();
+   
+          });
+
+        $('#se_authentifier').click(function(){
+        $("#authentification").show();
+        $("#newpassword").hide();
+        $("#envoie_passe").hide();
+        $("#erreur_passe").hide();
+   
+          });
+
+
+    $("#passwordform").submit(function(event) {
+
+     var url=$("#base_url").val();
+    
+    event.preventDefault();
+
+    var values = $(this).serialize();
+   
+    /* Envoie des données et récupération des résultats*/
+    $.ajax({
+        url: url+"libs/envoie_pass.php",
+        type: "post",
+        data: values,
+        success: function(data){
+    
+         if(data==-1){
+
+            $("#erreur_passe").show();
+            $("#envoie_passe").hide();
+
+            }else{
+
+
+           
+           $("#erreur_passe").hide();
+           $("#envoie_passe").show();
+     
+            }
+           
+        },
+        error:function(data){
+        alert("Une erreur est survenue"+data);
+           
+        }
+    });
+});
+
+
+    
+      $("#jemeconnecte").submit(function(event) {
+
+     var url=$("#base_url").val();
+    
+    event.preventDefault();
+
+    var values = $(this).serialize();
+   
+    /* Envoie des données et récupération des résultats*/
+    $.ajax({
+        url: url+"libs/main_login.php",
+        type: "post",
+        data: values,
+        success: function(data){
+          
+         if(data==-1){
+             $("#erreur_connection").show();
+            $("#succes-message").hide();
+
+            }else{
+               
+          if(data==-2){
+
+          var location=url+"home/login";
+
+          window.location.href=location;
+
+           }else{
+  
+            var location=url+"home/account/"+data;
+
+              window.location.href=location;
+
+
+             }
+    
+            }
+           
+        },
+        error:function(data){
+        alert("Une erreur est survenue"+data);
+           
+        }
+    });
+});
+
+
+      });
+
+    </script>
+
+<body>
+
+
+<div class="login-block" id="authentification">
+   <form id="jemeconnecte"  class="m-t-md" action="">
+  <input type="hidden" value="login.php" id="base_url" name="base_url"/>
+    <center> <img src="http://update-academy.com/assets/admin/assets/login/theupdate.png" style="width:300px;margin-bottom:5px;"/></center>
+    <div class="alert alert-danger" id="erreur_connection" style="margin-top:10px;">
+         Pseudo  ou mot de passe erroné
+     </div>
+    <input type="email" value="" placeholder="Email" id="username" name="pseudo"  required/>
+    <input type="password" value="" placeholder="Mot de passe" id="password" name="password"  required/>
+    <div class="g-recaptcha" data-sitekey="6LeqVw0UAAAAAKnNnRwlEZus6P19YHFV2HfuPw4s" style="transform:scale(0.7);transform-origin:0;-webkit-transform:scale(0.7);
+                                transform:scale(0.7);-webkit-transform-origin:0 0;transform-origin:0 0;"></div>
+    <button type="submit">Valider</button>
+      <div class="alert alert-warning"  style="margin-top:10px;">
+        <center> <a href="javascript:void(0);" id="pass_oublie">Mot de passe oublié</a> </center>
+     </div>
+    
+  </form>
+</div>
+
+<div class="login-block" id="newpassword">
+   <form id="passwordform"  class="m-t-md" action="">
+  <input type="hidden" value="login.php" id="base_url" name="base_url" />
+   <center> <img src="http://update-academy.com/assets/admin/assets/login/theupdate.png" style="width:300px;margin-bottom:5px;"/></center>
+   
+    
+    <div class="alert alert-success" id="envoie_passe" style="margin-top:10px;">
+         Mot de passe envoyé avec succès votre boite mail
+     </div>
+      <div class="alert alert-danger" id="erreur_passe" style="margin-top:10px;">
+        Ce mail n'existe pas dans la base
+     </div>
+    <input type="email" value="" placeholder="Entrez votre email" id="username" name="email"  required/>
+   
+    <button>Envoyer</button>
+     <div class="alert alert-success"  style="margin-top:10px;">
+        <center> <a href="javascript:void(0);" id="se_authentifier">Authentification</a> </center>
+     </div>
+  </form>
+</div>
+</body>
+
+</html>
